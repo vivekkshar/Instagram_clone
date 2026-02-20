@@ -71,6 +71,7 @@ async function logincontroller(req ,res) {
         {id: user._id},
         process.env.jwt_sceret
     )
+    
 
     res.cookie("token", token )
     res.status(200).json({
