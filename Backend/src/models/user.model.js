@@ -25,7 +25,6 @@ const userSchema = new  mongoose.Schema({
         default:"https://ik.imagekit.io/wq5vewdbt/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"
     }
 
-
 })
 
 

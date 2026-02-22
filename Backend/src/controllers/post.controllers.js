@@ -1,8 +1,7 @@
 const postModel = require("../models/post.model")
-const userModel = require("../models/user.model")
 const ImageKit  = require("@imagekit/nodejs")
-const { toFile } = require("@imagekit/nodejs")
-const jwt = require("jsonwebtoken")
+
+
 
 const imageKit =  new ImageKit({
     privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
@@ -13,28 +12,6 @@ const imageKit =  new ImageKit({
 
 async function createpostcontroller(req,res){
 
-    const token = req.cookies.token 
-
-    console.log(token)
-
-
-    if(!token){
-        return res.status(404).json({
-            message:"unauthorised user"
-        })
-    }
-    let decoded = null
-    try{
-         decoded = jwt.verify(token , process.env.jwt_sceret)
-    }catch(err){
-          return res.status(201).json({
-            message:"user not authorised "
-          })
-    }
-
-    
-    
-    console.log(decoded)
     
 
     const result  =  await imageKit.files.upload({
@@ -50,7 +27,7 @@ async function createpostcontroller(req,res){
     const post = await postModel.create({
         caption:req.body.caption,
         imgurl : result.url,
-        user : decoded.id
+        user : req.user.id
     })
 
     res.status(201).json({
@@ -62,20 +39,10 @@ async function createpostcontroller(req,res){
 }
 
 async function getpostcontroller(req, res){
-    const token = req.cookies.token 
-    
-    let decoded;
-    try{
-        decoded = jwt.verify(token , process.env.jwt_sceret)
-    }catch(err){
-        return res.status(401).json({
-            message:"token invalid"
-        })
-
-    }
+   
 
 
-    const userid = decoded.id
+    const userid = req.user.id
     
 
     if(!userid){
@@ -100,27 +67,10 @@ async function getpostcontroller(req, res){
 async function getpostdetails(req, res){
     
     
-    const token = req.cookies.token 
     
 
-    if(!token){
-        return res.status(401).json({
-            message:"unauthoried token "
-        })
-    }
     
-    let decoded;
-
-    try{
-       decoded = jwt.verify(token , process.env.jwt_sceret)
-    }catch(err){
-          return res.status(401).json({
-            message:"token invalid"
-          })
-    }
-
-    
-    const userid = decoded.id
+    const userid = req.user.id
 
     const postid= req.params.postid
     
