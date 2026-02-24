@@ -1,14 +1,15 @@
 const express = require("express")
-const followusercontroller = require("../controllers/follow.controllers")
+const { followusercontroller , unfollowusercontroller } = require("../controllers/follow.controllers")
 const identifyuser = require("../middleware/auth.middleware")
 
-const postRouter = express.Router()
+const userRouter = express.Router()
 
 
-postRouter.post("/follow/:username" , identifyuser , followusercontroller)
+userRouter.post("/follow/:username" , identifyuser , followusercontroller)
+userRouter.post("/unfollow/:username" ,identifyuser , unfollowusercontroller)
 
 
 
 
 
-module.exports = postRouter ;
+module.exports = userRouter ;
