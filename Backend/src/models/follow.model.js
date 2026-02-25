@@ -5,8 +5,16 @@ const followSchema = mongoose.Schema({
     follower:{
         type : String
     },
-    followee:{
+    following:{
         type: String
+    },
+    status:{
+        type:String,
+        default:"pending",
+        enum:{
+            values:["pending", "accepted", "rejected"],
+            message:"status can only be pending , accepted , rejected"
+        }
     }
 }, {
     timestamps: true

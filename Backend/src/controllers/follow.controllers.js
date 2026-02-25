@@ -3,11 +3,13 @@ const userModel =  require("../models/user.model")
 
 
 async function  followusercontroller(req ,res) {
-
+    
+    
     const followerusername = req.user.username;
     const followingusername = req.params.username;
+   
 
-    // Check if user is trying to follow themselves
+    // Check if user is 5trying to follow themselves
     if (followerusername === followingusername) {
         return res.status(400).json({
             message: "You can't follow yourself"
@@ -47,26 +49,26 @@ async function  followusercontroller(req ,res) {
 
 async function unfollowusercontroller(req,res){
         const followerusername = req.user.username;
-        console.log(followerusername)
+        
         const followingusername = req.params.username;
-        console.log(followingusername)
+        
         const isuserfollowing = await followModel.findOne({
                 follower: followerusername,
                 following: followingusername
         });
-        console.log(isuserfollowing)
+        
 
-        // if (isuserfollowing) {
-        //         return res.status(200).json({
-        //                 message: `You are not following ${followingusername}`
-        //         });
-        // }
+        if (!isuserfollowing) {
+                return res.status(200).json({
+                        message: `You are not following ${followingusername}`
+                });
+        }
 
-        // await followModel.findByIdAndDelete(isuserfollowing._id);
-        // res.status(200).json({
-        //         message: `You have unfollowed ${followingusername}`,
+        await followModel.findByIdAndDelete(isuserfollowing._id);
+        res.status(200).json({
+                message: `You have unfollowed ${followingusername}`,
                 
-        // });
+        });
 }
 
 module.exports = {followusercontroller,unfollowusercontroller};

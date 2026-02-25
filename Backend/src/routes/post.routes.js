@@ -1,5 +1,5 @@
 const express = require("express")
-const {createpostcontroller, getpostcontroller, getpostdetails} = require("../controllers/post.controllers")
+const {createpostcontroller, getpostcontroller, getpostdetails, likecontroller} = require("../controllers/post.controllers")
 const multer = require("multer")
 const identifyuser = require("../middleware/auth.middleware")
 
@@ -16,6 +16,8 @@ postRouter.post("/" ,upload.single("image"), identifyuser, createpostcontroller 
 postRouter.get("/", identifyuser, getpostcontroller )
 
 postRouter.get("/details/:postid",identifyuser, getpostdetails)
+
+postRouter.post("/like/:postid", identifyuser, likecontroller )
 
 
 
